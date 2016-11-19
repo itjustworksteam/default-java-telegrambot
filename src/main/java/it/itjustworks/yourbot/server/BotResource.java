@@ -49,7 +49,7 @@ public class BotResource extends ServerResource{
 		
 		String answer = "";
 		if(UPGRADE) {
-			answer = "Stiamo facendo manutenzione.\nRiprova più tardi!\n"
+			answer = "Stiamo facendo manutenzione.\nRiprova piu' tardi!\n"
 					+ "Per controllare lo stato dei nostri servizi clicca sul link: \n"
 					+ "www.itjustworks.it/status/";
 		} else {
