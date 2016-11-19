@@ -1,4 +1,13 @@
 language: java
+sudo: required
+services:
+  - docker
 jdk: oraclejdk8
 script:
    - ./gradlew clean check stage
+after_success:
+  - docker build -t therickys93/telegrambot .
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push therickys93/telegrambot;
+    fi
