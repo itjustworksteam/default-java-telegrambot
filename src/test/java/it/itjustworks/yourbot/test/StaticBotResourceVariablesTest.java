@@ -28,6 +28,17 @@ public class StaticBotResourceVariablesTest {
 		assertNotNull(BotResource.UPGRADE);
 	}
 	
+	@Test
+	public void testWrongIPError() {
+		assertEquals(getWrongIPOutput(), BotResource.WRONG_TELEGRAM_IP);
+	}
+	
+	private String getWrongIPOutput() {
+		String output = "";
+		output += "The request does not come from Telegram!!!";
+		return output;
+	}
+	
 	private String getResponseOutput() {
 		String output = "";
 		output += "See the chat on Telegram for more details!!!";
