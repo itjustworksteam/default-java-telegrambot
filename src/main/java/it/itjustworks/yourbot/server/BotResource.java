@@ -2,6 +2,7 @@ package it.itjustworks.yourbot.server;
 
 import java.io.IOException;
 
+import org.restlet.Request;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -17,6 +18,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 
 import it.itjustworks.yourbot.commands.BotResponse;
+import it.itjustworks.yourbot.utilities.TelegramIP;
 
 public class BotResource extends ServerResource{
 
@@ -24,6 +26,7 @@ public class BotResource extends ServerResource{
 	public static final String GET_RESPONSE = "See the chat on Telegram for more details!!!";
 	public static final boolean UPGRADE = false;
 	public static final String WRONG_TELEGRAM_TOKEN = "Wrong token from Telegram servers!!!";
+	public static final String WRONG_TELEGRAM_IP = "The request does not come from Telegram!!!";
 	
 	@Post
 	public Representation update(Representation data) throws IOException {
@@ -39,6 +42,13 @@ public class BotResource extends ServerResource{
 		if(update.updateId() == null) {
 			getLogger().warning(PARSE_ERROR);
 			setStatus(Status.CLIENT_ERROR_BAD_REQUEST, PARSE_ERROR);
+			return null;
+		}
+		
+		String ipTelegramAddress = Request.getCurrent().getHeaders().getFirstValue("X-Forwarded-For", true);
+		if(TelegramIP.isOk(ipTelegramAddress) == false){
+			getLogger().warning(WRONG_TELEGRAM_IP);
+			setStatus(Status.CLIENT_ERROR_BAD_REQUEST, WRONG_TELEGRAM_IP);
 			return null;
 		}
 		
